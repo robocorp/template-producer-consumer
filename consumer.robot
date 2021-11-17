@@ -7,21 +7,23 @@ Library    RPA.Browser.Selenium
 *** Keywords ***
 Login
     [Documentation]    
-    ...    Simulating a login that fails.
+    ...    Simulating a login that fails to highlight exception handling.
     ...    In this example login is performed only once for all work items.
 
-    ${random} =	Evaluate	random.randint(1, 2)
+    ${random}=    Evaluate    random.randint(1, 2) 
     IF    ${random} == 1 
         Log     Logged in as Bond
     ELSE    
         Fail    Login failed    
     END
 
+
+*** Keywords ***
 Action For One Item
-    [Documentation]    Simulating a handling of item that fails
+    [Documentation]    Simulating a handling of item that fails to highlight exception handling.
     [Arguments]    ${payload}
 
-    ${random} =	Evaluate	random.randint(1, 2)
+    ${random}=    Evaluate    random.randint(1, 2) 
     IF    ${random} == 1 
         Log    Order for: ${payload}[Name] zip: ${payload}[Zip] items: ${payload}[Items]
     ELSE    
@@ -36,7 +38,7 @@ Handle One Item
     ${passed}=    Run Keyword And Return Status
     ...    Action For One Item    ${payload} 
     IF    ${passed}
-        Release Input Work Item    DONE
+        Release Input Work Item    DONE    
     ELSE
         Log    Order Item failed for: ${payload}[Name]    level=ERROR
         Release Input Work Item
@@ -44,6 +46,7 @@ Handle One Item
         ...    exception_type=BUSINESS
         ...    message=Order prosessing failed for: ${payload}[Name]. Please check the work item data for errors.
     END
+
 
 *** Tasks ***
 Consume Items

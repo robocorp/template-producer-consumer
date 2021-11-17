@@ -18,13 +18,19 @@ The robot is split into two tasks, meant to run as separate steps in Control Roo
 
 ### The first task (the producer)
 
-- Splits the example Excel file into work items for the consumer
+- Load the example Excel file from work item
+- Splits the Excel file into work items for the consumer
 
 ### The second task (the consumer)
 
-- Demonstrates the different exceptions usage in robot with a simulated "Login" that fails randomly.
-  - Highlights the use of APPLICATION exception
-- Loops through the work items and just creates a logs row for each
-  - Highlights the use of BUSINESS exception
-- Documentation on [Work item exception handling](https://robocorp.com/docs/development-guide/control-room/work-items#work-item-exception-handling)
+> We recommended checking out the article "[Work item exception handling](https://robocorp.com/docs/development-guide/control-room/work-items#work-item-exception-handling)" before diving in.
 
+- A simulated "Login" step.
+  - This simulates random failures to highlight the use of `APPLICATION` -exception type.
+- Loop that handles the work items and just creates a logs row for each
+  - This simulates random failures to highlight the use of `BUSINESS` -exception type.
+
+### Local testing
+
+The Producer step does not require any input, it assumes the excel file packaged in the 
+Place the test inputs
