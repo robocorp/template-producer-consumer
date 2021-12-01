@@ -32,5 +32,4 @@ The robot is split into two tasks, meant to run as separate steps in Control Roo
 
 ### Local testing
 
-The Producer step does not require any input, it assumes the excel file packaged in the 
-Place the test inputs
+For best experience to test the work items in this example we recommend using [our VS Code extensions](https://robocorp.com/docs/developer-tools/visual-studio-code). With the Robocorp Code extension you can simply run and [select the input work items](https://robocorp.com/docs/developer-tools/visual-studio-code/extension-features#using-work-items) to use, create inputs to simulate error cases and so on.
