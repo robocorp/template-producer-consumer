@@ -1,8 +1,8 @@
 tasks:
   Produce:
-    robotTaskName: Produce Items
+    robotTaskName: Produce items
   Consume:
-    robotTaskName: Consume Items
+    robotTaskName: Consume items
 
 artifactsDir: output
 condaConfigFile: conda.yaml

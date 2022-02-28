@@ -5,7 +5,7 @@ Library           RPA.Robocorp.WorkItems
 Library           RPA.Tables
 
 *** Tasks ***
-Produce Items
+Produce items
     [Documentation]
     ...    Get source Excel file from work item.
     ...    Read rows from Excel.
