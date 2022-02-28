@@ -14,9 +14,11 @@ Produce Items
     Open Workbook    ${path}
     ${table}=    Read Worksheet As Table    header=True
     FOR    ${row}    IN    @{table}
+        ${variables}=    Create Dictionary
+        ...    Name=${row}[Name]
+        ...    Zip=${row}[Zip]
+        ...    Item=${row}[Item]
         Create Output Work Item
-        Set Work Item Variable    Name    ${row}[Name]
-        Set Work Item Variable    Zip    ${row}[Zip]
-        Set Work Item Variable    Item    ${row}[Item]
-        Save Work Item
+        ...    variables=${variables}
+        ...    save=True
     END
