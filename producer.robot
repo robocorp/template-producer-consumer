@@ -1,8 +1,9 @@
 *** Settings ***
-Library           Collections
-Library           RPA.Excel.Files
-Library           RPA.Robocorp.WorkItems
-Library           RPA.Tables
+Library     Collections
+Library     RPA.Excel.Files
+Library     RPA.Robocorp.WorkItems
+Library     RPA.Tables
+
 
 *** Tasks ***
 Produce items

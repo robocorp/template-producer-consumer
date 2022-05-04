@@ -1,8 +1,9 @@
 *** Settings ***
-Library           Collections
-Library           RPA.Browser.Selenium
-Library           RPA.Robocorp.WorkItems
-Library           RPA.Tables
+Library     Collections
+Library     RPA.Browser.Selenium
+Library     RPA.Robocorp.WorkItems
+Library     RPA.Tables
+
 
 *** Tasks ***
 Consume items
@@ -20,6 +21,7 @@ Consume items
         ...    exception_type=APPLICATION
         ...    message=${error_message}
     END
+
 
 *** Keywords ***
 Login
