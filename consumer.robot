@@ -80,7 +80,7 @@ Handle item
         Log    ${error_message}    level=ERROR
         Release Input Work Item
         ...    state=FAILED
-        ...    exception_type=BUSINESS
+        ...    exception_type=APPLICATION
         ...    code=TIMEOUT
         ...    message=${error_message}
     ELSE

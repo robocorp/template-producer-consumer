@@ -11,7 +11,7 @@ Produce items
     ...    Get source Excel file from work item.
     ...    Read rows from Excel.
     ...    Creates output work items per row.
-    ${path}=    Get Work Item File    orders.xlsx    %{ROBOT_ARTIFACT=temp}${/}orders.xlsx
+    ${path}=    Get Work Item File    orders.xlsx    %{ROBOT_ARTIFACTS}${/}orders.xlsx
     Open Workbook    ${path}
     ${table}=    Read Worksheet As Table    header=True
     FOR    ${row}    IN    @{table}
