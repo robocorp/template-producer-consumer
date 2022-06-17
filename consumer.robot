@@ -8,18 +8,16 @@ Library     RPA.Tables
 *** Tasks ***
 Consume items
     [Documentation]    Login and then cycle through work items.
-    ${Login OK}=    Run Keyword And Return Status
-    ...    Login
-    IF    ${Login OK}
+    TRY
+        Login
         For Each Input Work Item    Handle item
-    ELSE
-        ${error_message}=    Set Variable
-        ...    Unable to login to target system. Please check that the site/application is up and available.
-        Log    ${error_message}    level=ERROR
+    EXCEPT    AS    ${err}
+        Log    ${err}    level=ERROR
         Release Input Work Item
         ...    state=FAILED
         ...    exception_type=APPLICATION
-        ...    message=${error_message}
+        ...    code=UNCAUGHT_ERROR
+        ...    message=${err}
     END
 
 
@@ -37,31 +35,46 @@ Login
 
 Action for item
     [Documentation]
-    ...    Simulates handling of one work item that fails 1/5 times to
-    ...    highlight BUSINESS exception handling.
+    ...    Simulates handling of one work item that fails 1/5 times in
+    ...    two different ways to highlight BUSINESS and APPLICATION exception handling
+    ...    and how you can handle each differently from the main "Handle item" keyword.
     [Arguments]    ${payload}
-    ${Item Action OK}=    Evaluate    random.randint(1, 5)
-    IF    ${Item Action OK} != 1
-        Log    Did a thing item for: ${payload}
-    ELSE
-        Fail    Failed to handle item for: ${payload}.
+    ${Item Action OK}=    Evaluate    random.randint(1, 15)
+    IF    ${Item Action OK} not in [1,2,3]
+        Log    Did the first thing for: ${payload}
+    ELSE IF    ${Item Action OK} == 1
+        Fail    Invalid data in payload: ${payload}.
+    ELSE IF    ${Item Action OK} == 2
+        Fail    Application timed out, try again later.
+    ELSE IF    ${Item Action OK} == 3
+        Fail    I'm an unexpected error
     END
 
 Handle item
     [Documentation]    Error handling around one work item.
-    ${payload}=    Get Work Item Payload
-    ${Item Handled}=    Run Keyword And Return Status
-    ...    Action for item    ${payload}
-    IF    ${Item Handled}
+    ${payload}=    Get Work Item Variables
+    TRY
+        Action for item    ${payload}
         Release Input Work Item    DONE
-    ELSE
+    EXCEPT    Invalid data    type=START    AS    ${err}
         # Giving a good error message here means that data related errors can
         # be fixed faster in Control Room.
+        # You can extract the text from the underlying error message.
         ${error_message}=    Set Variable
-        ...    Failed to handle item for: ${payload}.
+        ...    Data may be invalid, encountered error: ${err}
         Log    ${error_message}    level=ERROR
         Release Input Work Item
         ...    state=FAILED
         ...    exception_type=BUSINESS
+        ...    code=INVALID_DATA
+        ...    message=${error_message}
+    EXCEPT    *timed out*    type=GLOB    AS    ${err}
+        ${error_message}=    Set Variable
+        ...    Application error encountered: ${err}
+        Log    ${error_message}    level=ERROR
+        Release Input Work Item
+        ...    state=FAILED
+        ...    exception_type=APPLICATION
+        ...    code=TIMEOUT
         ...    message=${error_message}
     END
