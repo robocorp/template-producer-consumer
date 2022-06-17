@@ -10,17 +10,14 @@ Consume items
     [Documentation]    Login and then cycle through work items.
     TRY
         Login
-    EXCEPT    Login failed
-        ${error_message}=    Set Variable
-        ...    Unable to login to target system. Please check that the site/application is up and available.
-        Log    ${error_message}    level=ERROR
+        For Each Input Work Item    Handle item
+    EXCEPT    AS    ${err}
+        Log    ${err}    level=ERROR
         Release Input Work Item
         ...    state=FAILED
         ...    exception_type=APPLICATION
-        ...    code=LOGIN
-        ...    message=${error_message}
-    ELSE
-        For Each Input Work Item    Handle item
+        ...    code=UNCAUGHT_ERROR
+        ...    message=${err}
     END
 
 
@@ -36,25 +33,21 @@ Login
         Fail    Login failed
     END
 
-Return to start
-    [Documentation]
-    ...    Simulates reseting the robot's environment to be ready for the next work item.
-    ...    Actual code could include navigating to a home page.
-    Log    Returning to start position...
-
 Action for item
     [Documentation]
     ...    Simulates handling of one work item that fails 1/5 times in
     ...    two different ways to highlight BUSINESS and APPLICATION exception handling
     ...    and how you can handle each differently from the main "Handle item" keyword.
     [Arguments]    ${payload}
-    ${Item Action OK}=    Evaluate    random.randint(1, 10)
-    IF    ${Item Action OK} not in [1,2]
+    ${Item Action OK}=    Evaluate    random.randint(1, 15)
+    IF    ${Item Action OK} not in [1,2,3]
         Log    Did the first thing for: ${payload}
     ELSE IF    ${Item Action OK} == 1
         Fail    Invalid data in payload: ${payload}.
     ELSE IF    ${Item Action OK} == 2
         Fail    Application timed out, try again later.
+    ELSE IF    ${Item Action OK} == 3
+        Fail    I'm an unexpected error
     END
 
 Handle item
@@ -62,6 +55,7 @@ Handle item
     ${payload}=    Get Work Item Variables
     TRY
         Action for item    ${payload}
+        Release Input Work Item    DONE
     EXCEPT    Invalid data    type=START    AS    ${err}
         # Giving a good error message here means that data related errors can
         # be fixed faster in Control Room.
@@ -83,7 +77,4 @@ Handle item
         ...    exception_type=APPLICATION
         ...    code=TIMEOUT
         ...    message=${error_message}
-    ELSE
-        Release Input Work Item    DONE
     END
-    [Teardown]    Return to start
