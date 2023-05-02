@@ -23,3 +23,4 @@ Produce items
         ...    variables=${variables}
         ...    save=True
     END
+    Release Input Work Item    DONE
