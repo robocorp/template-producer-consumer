@@ -1,4 +1,4 @@
-# Template for producer-consumer model robots using work items
+# Template: Robot Framework - Producer-Consumer
 
 This template contains a working robot implementation that has the basic structure where one part produces work items from input and another part that consumes those work items. 
 
