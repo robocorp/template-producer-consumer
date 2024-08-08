@@ -15,9 +15,9 @@ environmentConfigs:
 
 artifactsDir: output
 
-PATH: 
+PATH:
   - .
-PYTHONPATH: 
+PYTHONPATH:
   - .
 ignoreFiles:
   - .gitignore
